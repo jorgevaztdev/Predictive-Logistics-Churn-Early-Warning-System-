@@ -1,0 +1,66 @@
+Steps to Setup Virtual Environment and Resolve ipykernel Issues
+=================================================================
+
+Problem: Jupyter notebook was unable to run cells with Python 3.13.11 due to missing ipykernel package.
+
+Solution Steps:
+---------------
+
+1. Configured Python Environment
+   - Used the configure_python_environment tool to set up the virtual environment (.venv)
+   - Environment Type: venv
+   - Python Version: 3.13.11
+   - Virtual environment path: /home/jorgevaztmac/Documents/Project_PdM/Predictive-Logistics-Churn-Early-Warning-System-/.venv
+
+2. Installed Project Dependencies from requirements.txt
+   - numpy==2.4.0
+   - pandas==2.3.3
+   - python-dateutil==2.9.0.post0
+   - pytz==2025.2
+   - setuptools==80.9.0
+   - six==1.17.0
+   - tzdata==2025.3
+   - wheel==0.45.1
+
+3. Initial ipykernel Installation Attempt
+   - Tried installing ipykernel using install_python_packages tool
+   - Installation completed but kernel was still not accessible
+
+4. Force Reinstall ipykernel with All Dependencies
+   Command: /home/jorgevaztmac/Documents/Project_PdM/Predictive-Logistics-Churn-Early-Warning-System-/.venv/bin/python -m pip install ipykernel -U --force-reinstall
+   
+   This installed:
+   - ipykernel-7.1.0
+   - ipython-9.8.0
+   - jupyter-client-8.7.0
+   - jupyter-core-5.9.1
+   - And all required dependencies (debugpy, traitlets, pyzmq, tornado, etc.)
+
+5. Activated Virtual Environment
+   Command: source .venv/bin/activate
+   - Verified activation by checking Python path
+   - Confirmed Python 3.13.11 from .venv was being used
+
+6. Installed Jupyter Kernel Spec (Key Step)
+   Command: .venv/bin/python -m ipykernel install --user --name=venv_predictive_logistics --display-name="Python 3.13.11 (.venv)"
+   
+   This registered the virtual environment kernel with Jupyter so it can be selected in notebooks.
+   Kernel was installed to: /home/jorgevaztmac/.local/share/jupyter/kernels/venv_predictive_logistics
+
+7. Final Step (Manual)
+   - In VS Code, click the kernel selector in the top right of the notebook
+   - Select "Python 3.13.11 (.venv)" from the kernel list
+   - The notebook will now use the properly configured virtual environment
+
+Key Insights:
+-------------
+- Installing ipykernel in the virtual environment is not enough
+- The kernel spec must be registered with Jupyter using: python -m ipykernel install --user
+- VS Code needs to be pointed to the correct kernel through the kernel selector
+- The issue was that the notebook was trying to use /bin/python instead of the virtual environment's Python
+
+Verification Commands:
+---------------------
+which python        # Should show: .venv/bin/python
+python --version    # Should show: Python 3.13.11
+python -m pip list  # Should show all installed packages including ipykernel
